@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Brand } from '@/interfaces';
@@ -24,18 +25,30 @@ export function ProductForm({
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<ProductFormInput, unknown, ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: defaultValues ?? {
-      reference: '',
-      name: '',
-      description: '',
-      price: 0,
-      stock: 0,
       brand_id: 0,
+      name: '',
+      unit: 'UNIT',
+      observations: '',
+      inventory_quantity: 0,
     },
   });
+
+  useEffect(() => {
+    reset(
+      defaultValues ?? {
+        brand_id: 0,
+        name: '',
+        unit: 'UNIT',
+        observations: '',
+        inventory_quantity: 0,
+      },
+    );
+  }, [defaultValues, reset]);
 
   return (
     <form
@@ -43,87 +56,11 @@ export function ProductForm({
       className="space-y-5"
     >
       <div>
-        <Label className="mb-2 block font-medium text-slate-700">Reference</Label>
-
-        <Input
-          className="h-11 rounded-xl"
-          {...register('reference')} />
-
-        {errors.reference && (
-          <p className="mt-1 text-sm font-medium text-red-500">
-            {errors.reference.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <Label className="mb-2 block font-medium text-slate-700">Name</Label>
-
-        <Input
-          className="h-11 rounded-xl"
-          {...register('name')} />
-
-        {errors.name && (
-          <p className="mt-1 text-sm font-medium text-red-500">
-            {errors.name.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <Label className="mb-2 block font-medium text-slate-700">Description</Label>
-
-        <Input
-          className="h-11 rounded-xl"
-          {...register('description')} />
-
-        {errors.description && (
-          <p className="mt-1 text-sm font-medium text-red-500">
-            {errors.description.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <Label className="mb-2 block font-medium text-slate-700">Price</Label>
-
-        <Input
-          className="h-11 rounded-xl"
-          type="number"
-          {...register('price')}
-        />
-
-        {errors.price && (
-          <p className="mt-1 text-sm font-medium text-red-500">
-            {errors.price.message}
-          </p>
-        )}
-      </div>
-
-      <div>
-        <Label className="mb-2 block font-medium text-slate-700">Stock</Label>
-
-        <Input
-          className="h-11 rounded-xl"
-          type="number"
-          {...register('stock')}
-        />
-
-        {errors.stock && (
-          <p className="mt-1 text-sm font-medium text-red-500">
-            {errors.stock.message}
-          </p>
-        )}
-      </div>
-
-      <div>
         <Label className="mb-2 block font-medium text-slate-700">Brand</Label>
 
         <Select
-          value={String(watch('brand_id'))}
-          onValueChange={(value) =>
-            setValue('brand_id', Number(value))
-          }
+          value={watch('brand_id') ? String(watch('brand_id')) : ''}
+          onValueChange={(value) => setValue('brand_id', Number(value))}
         >
           <SelectTrigger className="h-11 rounded-xl">
             <SelectValue placeholder="Select a brand" />
@@ -131,10 +68,7 @@ export function ProductForm({
 
           <SelectContent>
             {brands.map((brand) => (
-              <SelectItem
-                key={brand.id}
-                value={String(brand.id)}
-              >
+              <SelectItem key={brand.id} value={String(brand.id)}>
                 {brand.name}
               </SelectItem>
             ))}
@@ -148,7 +82,73 @@ export function ProductForm({
         )}
       </div>
 
+      <div>
+        <Label className="mb-2 block font-medium text-slate-700">Name</Label>
+
+        <Input className="h-11 rounded-xl" {...register('name')} />
+
+        {errors.name && (
+          <p className="mt-1 text-sm font-medium text-red-500">
+            {errors.name.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <Label className="mb-2 block font-medium text-slate-700">Unit</Label>
+
+        <Select
+          value={watch('unit')}
+          onValueChange={(value) => setValue('unit', value as ProductFormValues['unit'])}
+        >
+          <SelectTrigger className="h-11 rounded-xl">
+            <SelectValue placeholder="Select a unit" />
+          </SelectTrigger>
+
+          <SelectContent>
+            <SelectItem value="UNIT">Unit</SelectItem>
+            <SelectItem value="DISPLAY">Display</SelectItem>
+            <SelectItem value="BOX">Box</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {errors.unit && (
+          <p className="mt-1 text-sm font-medium text-red-500">
+            {errors.unit.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <Label className="mb-2 block font-medium text-slate-700">Observations</Label>
+
+        <Input className="h-11 rounded-xl" {...register('observations')} />
+
+        {errors.observations && (
+          <p className="mt-1 text-sm font-medium text-red-500">
+            {errors.observations.message}
+          </p>
+        )}
+      </div>
+
+      <div>
+        <Label className="mb-2 block font-medium text-slate-700">Inventory quantity</Label>
+
+        <Input
+          className="h-11 rounded-xl"
+          type="number"
+          {...register('inventory_quantity')}
+        />
+
+        {errors.inventory_quantity && (
+          <p className="mt-1 text-sm font-medium text-red-500">
+            {errors.inventory_quantity.message}
+          </p>
+        )}
+      </div>
+
       <Button
+        type="submit"
         className="mt-3 h-11 w-full rounded-xl"
         disabled={isSubmitting}
       >

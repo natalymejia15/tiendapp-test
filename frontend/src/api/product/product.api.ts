@@ -2,12 +2,11 @@ import client from '@/api/client';
 import { PaginatedResponse, Product } from '@/interfaces';
 
 export interface CreateProductDto {
-  reference: string;
-  name: string;
-  description: string;
-  price: number;
-  stock: number;
   brand_id: number;
+  name: string;
+  unit: 'UNIT' | 'DISPLAY' | 'BOX';
+  observations: string;
+  inventory_quantity: number;
 }
 
 class ProductApi {

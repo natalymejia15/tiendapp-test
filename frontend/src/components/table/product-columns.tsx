@@ -15,10 +15,6 @@ export function getProductColumns({
 }: ProductColumnHandlers): ColumnDef<Product>[] {
   return [
     {
-      accessorKey: 'reference',
-      header: 'Reference',
-    },
-    {
       accessorKey: 'name',
       header: 'Name',
     },
@@ -28,17 +24,16 @@ export function getProductColumns({
       header: 'Brand',
     },
     {
-      accessorKey: 'price',
-      header: 'Price',
-      cell: ({ row }) =>
-        new Intl.NumberFormat('es-CO', {
-          style: 'currency',
-          currency: 'COP',
-        }).format(row.original.price),
+      accessorKey: 'unit',
+      header: 'Unit',
     },
     {
-      accessorKey: 'stock',
-      header: 'Stock',
+      accessorKey: 'observations',
+      header: 'Observations',
+    },
+    {
+      accessorKey: 'inventory_quantity',
+      header: 'Inventory quantity',
     },
     {
       id: 'actions',

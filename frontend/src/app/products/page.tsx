@@ -79,12 +79,11 @@ export default function ProductsPage() {
             defaultValues={
               selectedProduct
                 ? {
-                    reference: selectedProduct.reference,
+                    brand_id: selectedProduct.brand_id ?? selectedProduct.brand?.id ?? 0,
                     name: selectedProduct.name,
-                    description: selectedProduct.description,
-                    price: selectedProduct.price,
-                    stock: selectedProduct.stock,
-                    brand_id: selectedProduct.brand_id,
+                    unit: selectedProduct.unit,
+                    observations: selectedProduct.observations,
+                    inventory_quantity: selectedProduct.inventory_quantity,
                   }
                 : undefined
             }

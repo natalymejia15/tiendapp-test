@@ -2,12 +2,11 @@ import { Brand } from "../brand";
 
 export interface Product {
   id: number;
-  reference: string;
   name: string;
-  description: string;
-  price: number;
-  stock: number;
-  brand_id: number;
+  unit: 'UNIT' | 'DISPLAY' | 'BOX';
+  observations: string;
+  inventory_quantity: number;
+  brand_id?: number;
 
   brand: Brand;
 
