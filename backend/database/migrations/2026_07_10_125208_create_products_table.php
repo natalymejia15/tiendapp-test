@@ -15,7 +15,7 @@ return new class extends Migration
                 ->constrained()
                 ->restrictOnDelete();
 
-            $table->string('name', 150);
+            $table->string('name', 150)->unique();
 
             $table->string('unit', 20);
 

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Product;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class ProductService
 {
-    public function getAll(?string $search = null): LengthAwarePaginator
+    public function getAll(?string $search = null): Collection
     {
         return Product::query()
             ->when(
@@ -18,8 +18,7 @@ class ProductService
                 fn ($query) => $query->where('name', 'like', "%{$search}%")
             )
             ->orderBy('name')
-            ->paginate(10)
-            ->withQueryString();
+            ->get();
     }
 
     public function getById(Product $product): Product

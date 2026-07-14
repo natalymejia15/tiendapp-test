@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Brand } from '@/interfaces';
 import { ProductFormInput, ProductFormValues, productSchema } from '@/schemas';
@@ -23,6 +23,7 @@ export function ProductForm({
   const {
     register,
     handleSubmit,
+    control,
     setValue,
     watch,
     reset,
@@ -56,24 +57,43 @@ export function ProductForm({
       className="space-y-5"
     >
       <div>
-        <Label className="mb-2 block font-medium text-slate-700">Brand</Label>
+        <Label className="mb-2 block font-medium text-slate-700">
+          Brand
+        </Label>
 
-        <Select
-          value={watch('brand_id') ? String(watch('brand_id')) : ''}
-          onValueChange={(value) => setValue('brand_id', Number(value))}
-        >
-          <SelectTrigger className="h-11 rounded-xl">
-            <SelectValue placeholder="Select a brand" />
-          </SelectTrigger>
+        <Controller
+          control={control}
+          name="brand_id"
+          render={({ field }) => {
+            const selectedBrand = brands.find(
+              (brand) => brand.id === field.value
+            );
 
-          <SelectContent>
-            {brands.map((brand) => (
-              <SelectItem key={brand.id} value={String(brand.id)}>
-                {brand.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+            return (
+              <Select
+                value={field.value ? String(field.value) : ''}
+                onValueChange={(value) => field.onChange(Number(value))}
+              >
+                <SelectTrigger className="h-11 rounded-xl">
+                  <SelectValue>
+                    {selectedBrand?.name ?? 'Select a brand'}
+                  </SelectValue>
+                </SelectTrigger>
+
+                <SelectContent>
+                  {brands.map((brand) => (
+                    <SelectItem
+                      key={brand.id}
+                      value={String(brand.id)}
+                    >
+                      {brand.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            );
+          }}
+        />
 
         {errors.brand_id && (
           <p className="mt-1 text-sm font-medium text-red-500">

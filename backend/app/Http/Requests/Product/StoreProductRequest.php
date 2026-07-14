@@ -20,7 +20,7 @@ class StoreProductRequest extends FormRequest
         return [
             'brand_id' => ['required', 'exists:brands,id'],
 
-            'name' => ['required', 'string', 'max:150'],
+            'name' => ['required', 'string', 'max:150','unique:products,name'],
 
             'unit' => [
                 'required',
@@ -42,11 +42,9 @@ class StoreProductRequest extends FormRequest
         return [
             'brand_id.required' => 'The brand is required.',
             'brand_id.exists' => 'The selected brand is invalid.',
-
+            'name.unique' => 'The product name already exists.',
             'name.required' => 'The name field is required.',
-
             'observations.required' => 'The observations field is required.',
-
             'inventory_quantity.required' => 'The inventory quantity is required.',
             'inventory_quantity.min' => 'Inventory quantity cannot be negative.',
         ];

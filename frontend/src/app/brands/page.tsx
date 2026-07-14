@@ -2,13 +2,15 @@
 
 import {
   BrandForm,
-  BrandTable,
   Button,
   ConfirmDialog,
+  DataTable,
   FormDialog,
   PageHeader,
+  TablePagination,
+  TableToolbar,
 } from '@/components';
-import { useBrandsPage } from '@/hooks';
+import { useBrandsPage, useTable } from '@/hooks';
 
 export default function BrandsPage() {
   const {
@@ -26,12 +28,16 @@ export default function BrandsPage() {
     data,
     isLoading,
     isError,
-    handleEdit,
+    columns,
     handleSubmit,
-    handleDelete,
     confirmDelete,
     toasts,
   } = useBrandsPage();
+
+  const table = useTable(
+    data?.data ?? [],
+    (brand) => `${brand.reference} ${brand.name}`,
+  );
 
   if (isLoading) {
     return (
@@ -52,6 +58,7 @@ export default function BrandsPage() {
       </div>
     );
   }
+
 
   return (
     <div className="space-y-6">
@@ -80,9 +87,9 @@ export default function BrandsPage() {
             defaultValues={
               selectedBrand
                 ? {
-                    reference: selectedBrand.reference,
-                    name: selectedBrand.name,
-                  }
+                  reference: selectedBrand.reference,
+                  name: selectedBrand.name,
+                }
                 : undefined
             }
             onSubmit={handleSubmit}
@@ -94,10 +101,19 @@ export default function BrandsPage() {
       </PageHeader>
 
       <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <BrandTable
-          brands={data.data}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
+        <TableToolbar
+          value={table.search}
+          onChange={table.setSearch}
+          placeholder="Search brand..."
+        />
+        <DataTable
+          columns={columns}
+          data={table.data}
+        />
+        <TablePagination
+          page={table.page}
+          totalPages={table.totalPages}
+          onPageChange={table.setPage}
         />
       </div>
 
@@ -117,11 +133,10 @@ export default function BrandsPage() {
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`rounded-xl border p-4 shadow-lg transition-all ${
-              toast.variant === 'error'
-                ? 'border-red-200 bg-red-50 text-red-700'
-                : 'border-emerald-200 bg-emerald-50 text-emerald-700'
-            }`}
+            className={`rounded-xl border p-4 shadow-lg transition-all ${toast.variant === 'error'
+              ? 'border-red-200 bg-red-50 text-red-700'
+              : 'border-emerald-200 bg-emerald-50 text-emerald-700'
+              }`}
           >
             <p className="font-semibold">
               {toast.title}

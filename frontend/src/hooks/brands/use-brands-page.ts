@@ -1,79 +1,25 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDeleteBrand } from "./use-delete-brand";
 import { useBrands } from "./use-brands";
 import { useCreateBrand } from "./use-create-brand";
 import { useUpdateBrand } from "./use-update-brand";
 import { Brand } from "@/interfaces";
 import { BrandFormValues } from "@/schemas";
+import { useToasts } from "../common";
+import { getErrorMessage } from "@/lib";
+import { getBrandColumns} from "@/components";
 
-interface ToastItem {
-    id: number;
-    title: string;
-    description?: string;
-    variant: "success" | "error";
-}
 
 export function useBrandsPage() {
     const [open, setOpen] = useState(false);
     const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [brandToDelete, setBrandToDelete] = useState<Brand | null>(null);
-    const [toasts, setToasts] = useState<ToastItem[]>([]);
     const deleteBrand = useDeleteBrand();
     const createBrand = useCreateBrand();
     const updateBrand = useUpdateBrand();
     const { data, isLoading, isError } = useBrands();
-
-    function pushToast(title: string, description: string, variant: ToastItem["variant"] = "success") {
-        const id = Date.now() + Math.random();
-
-        setToasts((current) => [...current, { id, title, description, variant }]);
-
-        window.setTimeout(() => {
-            setToasts((current) => current.filter((toast) => toast.id !== id));
-        }, 4000);
-    }
-
-    function getErrorMessage(error: unknown) {
-        if (typeof error === "string") {
-            return error;
-        }
-
-        if (error instanceof Error) {
-            return error.message;
-        }
-
-        const maybeError = error as {
-            response?: {
-                data?: {
-                    message?: string;
-                    errors?: unknown;
-                };
-            };
-        };
-
-        if (maybeError.response?.data?.message) {
-            return maybeError.response.data.message;
-        }
-
-        if (maybeError.response?.data?.errors) {
-            const errors = maybeError.response.data.errors;
-
-            if (typeof errors === "string") {
-                return errors;
-            }
-
-            if (Array.isArray(errors)) {
-                return errors.join(", ");
-            }
-
-            if (typeof errors === "object") {
-                return Object.values(errors).flat().join(", ");
-            }
-        }
-
-        return "Something went wrong. Please try again.";
-    }
+    const { toasts, pushToast } = useToasts();
 
     function handleEdit(brand: Brand) {
         setSelectedBrand(brand);
@@ -120,6 +66,15 @@ export function useBrandsPage() {
             pushToast("Unable to delete brand", getErrorMessage(error), "error");
         }
     }
+    const columns = useMemo(
+        () =>
+            getBrandColumns({
+                onEdit: handleEdit,
+                onDelete: handleDelete,
+            }),
+        [],
+    );
+
 
     return {
         open,
@@ -141,5 +96,6 @@ export function useBrandsPage() {
         handleDelete,
         confirmDelete,
         toasts,
+        columns
     }
 }

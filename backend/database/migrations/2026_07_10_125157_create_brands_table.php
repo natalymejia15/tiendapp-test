@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('reference', 50)->unique();
-            $table->string('name', 150);
+            $table->string('name', 150) ->unique();
 
             $table->timestamps();
         });

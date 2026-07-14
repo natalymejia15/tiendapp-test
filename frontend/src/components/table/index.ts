@@ -1,2 +1,2 @@
-export * from './brand-table'
+export * from './brand-columns'
 export * from './product-columns'

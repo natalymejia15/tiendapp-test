@@ -19,9 +19,8 @@ export default function HomePage() {
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
           <Button
-            render={
-              <Link href="/brands" />
-            }
+            render={<Link href="/brands" />}
+            nativeButton={false}
             size="lg"
             className="h-14 rounded-xl bg-blue-600 text-base font-medium shadow-sm"
           >
@@ -30,9 +29,8 @@ export default function HomePage() {
           </Button>
 
           <Button
-            render={
-              <Link href="/products" />
-            }
+            render={<Link href="/products" />}
+            nativeButton={false}
             size="lg"
             variant="outline"
             className="h-14 rounded-xl"
