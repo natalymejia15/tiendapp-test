@@ -1,7 +1,14 @@
 'use client';
 
-import { BrandForm, BrandTable, Button, ConfirmDialog, FormDialog, PageHeader } from '@/components';
-import { useBrandsPage, } from '@/hooks';
+import {
+  BrandForm,
+  BrandTable,
+  Button,
+  ConfirmDialog,
+  FormDialog,
+  PageHeader,
+} from '@/components';
+import { useBrandsPage } from '@/hooks';
 
 export default function BrandsPage() {
   const {
@@ -23,20 +30,34 @@ export default function BrandsPage() {
     handleSubmit,
     handleDelete,
     confirmDelete,
-    toasts, } = useBrandsPage();
+    toasts,
+  } = useBrandsPage();
+
   if (isLoading) {
-    return <p className="p-6">Loading...</p>;
+    return (
+      <div className="flex h-80 items-center justify-center">
+        <p className="text-sm text-slate-500">
+          Loading brands...
+        </p>
+      </div>
+    );
   }
 
   if (isError || !data) {
-    return <p className="p-6">Error loading brands.</p>;
+    return (
+      <div className="flex h-80 items-center justify-center rounded-2xl border border-red-200 bg-red-50">
+        <p className="font-medium text-red-600">
+          Error loading brands.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <main className="mx-auto max-w-6xl p-6">
+    <div className="space-y-6">
       <PageHeader
         title="Brands"
-        description="Manage available brands."
+        description="Manage your available brands."
       >
         <FormDialog
           open={open}
@@ -47,15 +68,9 @@ export default function BrandsPage() {
               setSelectedBrand(null);
             }
           }}
-          title={
-            selectedBrand
-              ? 'Edit Brand'
-              : 'Create Brand'
-          }
+          title={selectedBrand ? 'Edit Brand' : 'Create Brand'}
           trigger={
-            <Button
-              onClick={() => setSelectedBrand(null)}
-            >
+            <Button onClick={() => setSelectedBrand(null)}>
               New Brand
             </Button>
           }
@@ -65,25 +80,27 @@ export default function BrandsPage() {
             defaultValues={
               selectedBrand
                 ? {
-                  reference: selectedBrand.reference,
-                  name: selectedBrand.name,
-                }
+                    reference: selectedBrand.reference,
+                    name: selectedBrand.name,
+                  }
                 : undefined
             }
             onSubmit={handleSubmit}
             isSubmitting={
-              createBrand.isPending ||
-              updateBrand.isPending
+              createBrand.isPending || updateBrand.isPending
             }
           />
         </FormDialog>
       </PageHeader>
 
-      <BrandTable
-        brands={data.data}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <BrandTable
+          brands={data.data}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      </div>
+
       <ConfirmDialog
         open={deleteOpen}
         title="Delete Brand"
@@ -96,17 +113,28 @@ export default function BrandsPage() {
         onConfirm={confirmDelete}
       />
 
-      <div className="fixed inset-x-4 top-4 z-[9999] flex w-[min(24rem,calc(100vw-2rem))] flex-col gap-2 md:right-4 md:left-auto">
+      <div className="fixed right-4 top-4 z-[9999] flex w-96 max-w-[calc(100vw-2rem)] flex-col gap-3">
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className={`rounded-lg border p-4 shadow-lg ${toast.variant === 'error' ? 'border-red-200 bg-red-50 text-red-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}
+            className={`rounded-xl border p-4 shadow-lg transition-all ${
+              toast.variant === 'error'
+                ? 'border-red-200 bg-red-50 text-red-700'
+                : 'border-emerald-200 bg-emerald-50 text-emerald-700'
+            }`}
           >
-            <p className="font-medium">{toast.title}</p>
-            {toast.description ? <p className="mt-1 text-sm">{toast.description}</p> : null}
+            <p className="font-semibold">
+              {toast.title}
+            </p>
+
+            {toast.description && (
+              <p className="mt-1 text-sm opacity-90">
+                {toast.description}
+              </p>
+            )}
           </div>
         ))}
       </div>
-    </main>
+    </div>
   );
 }

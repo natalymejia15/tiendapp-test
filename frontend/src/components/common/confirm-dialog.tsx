@@ -33,25 +33,25 @@ export function ConfirmDialog({
         if (!value) onCancel();
       }}
     >
-      <AlertDialogContent>
+      <AlertDialogContent className="rounded-2xl border border-slate-200 bg-white shadow-xl">
         <AlertDialogHeader>
-          <AlertDialogTitle>
+          <AlertDialogTitle className="text-xl font-semibold">
             {title}
           </AlertDialogTitle>
 
-          <AlertDialogDescription>
+          <AlertDialogDescription className="mt-2 text-slate-500">
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel
+          <AlertDialogCancel className="rounded-xl"
             onClick={onCancel}
           >
             Cancel
           </AlertDialogCancel>
 
-          <AlertDialogAction
+          <AlertDialogAction className="rounded-xl bg-red-600 hover:bg-red-700"
             disabled={loading}
             onClick={handleConfirm}
           >

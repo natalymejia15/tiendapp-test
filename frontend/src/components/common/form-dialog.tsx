@@ -29,9 +29,11 @@ export function FormDialog({
         {trigger}
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xl sm:max-w-xl">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle className="text-xl font-semibold text-slate-900">
+            {title}
+          </DialogTitle>
         </DialogHeader>
 
         {children}

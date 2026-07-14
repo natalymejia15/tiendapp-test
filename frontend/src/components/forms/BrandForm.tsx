@@ -40,37 +40,39 @@ export function BrandForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4"
+      className="space-y-5"
     >
-      <div className="space-y-2">
-        <Label htmlFor="reference">
+      <div>
+        <Label className="mb-2 block font-medium text-slate-700" htmlFor="reference">
           Reference
         </Label>
 
         <Input
+          className="h-11 rounded-xl"
           id="reference"
           {...register('reference')}
         />
 
         {errors.reference && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.reference.message}
           </p>
         )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="name">
+        <Label className="mb-2 block font-medium text-slate-700" htmlFor="name">
           Name
         </Label>
 
         <Input
+          className="h-11 rounded-xl"
           id="name"
           {...register('name')}
         />
 
         {errors.name && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.name.message}
           </p>
         )}
@@ -78,7 +80,7 @@ export function BrandForm({
 
       <Button
         type="submit"
-        className="w-full"
+        className="mt-3 h-11 w-full rounded-xl"
         disabled={isSubmitting}
       >
         {isSubmitting ? 'Saving...' : 'Save'}

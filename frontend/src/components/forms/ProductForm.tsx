@@ -27,7 +27,7 @@ export function ProductForm({
     formState: { errors },
   } = useForm<ProductFormInput, unknown, ProductFormValues>({
     resolver: zodResolver(productSchema),
-    defaultValues: {
+    defaultValues: defaultValues ?? {
       reference: '',
       name: '',
       description: '',
@@ -40,76 +40,84 @@ export function ProductForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4"
+      className="space-y-5"
     >
       <div>
-        <Label>Reference</Label>
+        <Label className="mb-2 block font-medium text-slate-700">Reference</Label>
 
-        <Input {...register('reference')} />
+        <Input
+          className="h-11 rounded-xl"
+          {...register('reference')} />
 
         {errors.reference && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.reference.message}
           </p>
         )}
       </div>
 
       <div>
-        <Label>Name</Label>
+        <Label className="mb-2 block font-medium text-slate-700">Name</Label>
 
-        <Input {...register('name')} />
+        <Input
+          className="h-11 rounded-xl"
+          {...register('name')} />
 
         {errors.name && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.name.message}
           </p>
         )}
       </div>
 
       <div>
-        <Label>Description</Label>
+        <Label className="mb-2 block font-medium text-slate-700">Description</Label>
 
-        <Input {...register('description')} />
+        <Input
+          className="h-11 rounded-xl"
+          {...register('description')} />
 
         {errors.description && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.description.message}
           </p>
         )}
       </div>
 
       <div>
-        <Label>Price</Label>
+        <Label className="mb-2 block font-medium text-slate-700">Price</Label>
 
         <Input
+          className="h-11 rounded-xl"
           type="number"
           {...register('price')}
         />
 
         {errors.price && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.price.message}
           </p>
         )}
       </div>
 
       <div>
-        <Label>Stock</Label>
+        <Label className="mb-2 block font-medium text-slate-700">Stock</Label>
 
         <Input
+          className="h-11 rounded-xl"
           type="number"
           {...register('stock')}
         />
 
         {errors.stock && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.stock.message}
           </p>
         )}
       </div>
 
       <div>
-        <Label>Brand</Label>
+        <Label className="mb-2 block font-medium text-slate-700">Brand</Label>
 
         <Select
           value={String(watch('brand_id'))}
@@ -117,7 +125,7 @@ export function ProductForm({
             setValue('brand_id', Number(value))
           }
         >
-          <SelectTrigger>
+          <SelectTrigger className="h-11 rounded-xl">
             <SelectValue placeholder="Select a brand" />
           </SelectTrigger>
 
@@ -134,14 +142,14 @@ export function ProductForm({
         </Select>
 
         {errors.brand_id && (
-          <p className="text-sm text-red-500">
+          <p className="mt-1 text-sm font-medium text-red-500">
             {errors.brand_id.message}
           </p>
         )}
       </div>
 
       <Button
-        className="w-full"
+        className="mt-3 h-11 w-full rounded-xl"
         disabled={isSubmitting}
       >
         {isSubmitting ? 'Saving...' : 'Save'}

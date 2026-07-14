@@ -1,7 +1,9 @@
+import type { ReactNode } from 'react';
+
 interface PageHeaderProps {
   title: string;
   description: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export function PageHeader({
@@ -10,10 +12,13 @@ export function PageHeader({
   children,
 }: PageHeaderProps) {
   return (
-    <div className="mb-6 flex items-center justify-between">
-      <div>
-        <h1 className="text-3xl font-bold">{title}</h1>
-        <p className="text-muted-foreground">
+    <div className="flex flex-col gap-6 border-b border-slate-200 pb-6 md:flex-row md:items-center md:justify-between">
+      <div className="space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+          {title}
+        </h1>
+
+        <p className="text-sm text-slate-500">
           {description}
         </p>
       </div>

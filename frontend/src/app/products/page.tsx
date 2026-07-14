@@ -1,8 +1,14 @@
 'use client';
 
-import { Button, ConfirmDialog, DataTable, FormDialog, PageHeader, ProductForm } from '@/components';
+import {
+  Button,
+  ConfirmDialog,
+  DataTable,
+  FormDialog,
+  PageHeader,
+  ProductForm,
+} from '@/components';
 import { useProductPage } from '@/hooks';
-
 
 export default function ProductsPage() {
   const {
@@ -25,19 +31,32 @@ export default function ProductsPage() {
     updateProduct,
     deleteProduct,
   } = useProductPage();
+
   if (isLoading) {
-    return <p className="p-6">Loading...</p>;
+    return (
+      <div className="flex h-80 items-center justify-center">
+        <p className="text-sm text-slate-500">
+          Loading products...
+        </p>
+      </div>
+    );
   }
 
   if (isError || !data || !brands) {
-    return <p className="p-6">Error loading products.</p>;
+    return (
+      <div className="flex h-80 items-center justify-center rounded-2xl border border-red-200 bg-red-50">
+        <p className="font-medium text-red-600">
+          Error loading products.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <main className="mx-auto max-w-7xl p-6">
+    <div className="space-y-6">
       <PageHeader
         title="Products"
-        description="Manage products."
+        description="Manage your product catalog."
       >
         <FormDialog
           open={open}
@@ -48,17 +67,9 @@ export default function ProductsPage() {
               setSelectedProduct(null);
             }
           }}
-          title={
-            selectedProduct
-              ? 'Edit Product'
-              : 'Create Product'
-          }
+          title={selectedProduct ? 'Edit Product' : 'Create Product'}
           trigger={
-            <Button
-              onClick={() =>
-                setSelectedProduct(null)
-              }
-            >
+            <Button onClick={() => setSelectedProduct(null)}>
               New Product
             </Button>
           }
@@ -68,31 +79,29 @@ export default function ProductsPage() {
             defaultValues={
               selectedProduct
                 ? {
-                  reference:
-                    selectedProduct.reference,
-                  name: selectedProduct.name,
-                  description:
-                    selectedProduct.description,
-                  price: selectedProduct.price,
-                  stock: selectedProduct.stock,
-                  brand_id:
-                    selectedProduct.brand_id,
-                }
+                    reference: selectedProduct.reference,
+                    name: selectedProduct.name,
+                    description: selectedProduct.description,
+                    price: selectedProduct.price,
+                    stock: selectedProduct.stock,
+                    brand_id: selectedProduct.brand_id,
+                  }
                 : undefined
             }
             onSubmit={handleSubmit}
             isSubmitting={
-              createProduct.isPending ||
-              updateProduct.isPending
+              createProduct.isPending || updateProduct.isPending
             }
           />
         </FormDialog>
       </PageHeader>
 
-      <DataTable
-        columns={columns}
-        data={data.data}
-      />
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <DataTable
+          columns={columns}
+          data={data.data}
+        />
+      </div>
 
       <ConfirmDialog
         open={deleteOpen}
@@ -105,6 +114,6 @@ export default function ProductsPage() {
         }}
         onConfirm={confirmDelete}
       />
-    </main>
+    </div>
   );
 }

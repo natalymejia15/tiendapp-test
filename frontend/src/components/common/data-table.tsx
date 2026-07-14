@@ -8,7 +8,6 @@ import {
 } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui';
 
-
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
@@ -25,19 +24,19 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-lg border">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <Table>
-        <TableHeader>
+        <TableHeader className="bg-slate-50">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="transition-colors hover:bg-slate-50">
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
+                <TableHead key={header.id} className="h-12 font-semibold text-slate-700">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
                 </TableHead>
               ))}
             </TableRow>
@@ -47,9 +46,9 @@ export function DataTable<TData, TValue>({
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow key={row.id} className="transition-colors hover:bg-slate-50">
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="py-4">
                     {flexRender(
                       cell.column.columnDef.cell,
                       cell.getContext(),
@@ -62,7 +61,7 @@ export function DataTable<TData, TValue>({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 text-center"
+                className="h-32 text-center text-slate-500"
               >
                 No records found.
               </TableCell>
