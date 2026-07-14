@@ -1,4 +1,4 @@
-import brandApi from '@/api/brand/brand.api';
+import { brandApi } from '@/api';
 import { CreateBrandDto } from '@/interfaces';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 

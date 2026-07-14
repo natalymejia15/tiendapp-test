@@ -1,4 +1,4 @@
-import brandApi from '@/api/brand/brand.api';
+import { brandApi } from '@/api';
 import { useQuery } from '@tanstack/react-query';
 
 

@@ -1,10 +1,16 @@
-import { Brand } from "../drand";
+import { Brand } from "../brand";
 
 export interface Product {
   id: number;
+  reference: string;
   name: string;
-  unit: 'UNIT' | 'DISPLAY' | 'BOX';
-  observations: string;
-  inventory_quantity: number;
+  description: string;
+  price: number;
+  stock: number;
+  brand_id: number;
+
   brand: Brand;
+
+  created_at: string;
+  updated_at: string;
 }

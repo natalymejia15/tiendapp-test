@@ -1,2 +1,3 @@
-export * from './drand'
+export * from './brand'
 export * from './common'
+export * from './product'

@@ -1,11 +1,11 @@
+import { brandApi } from '@/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import BrandApi from '@/api/brand/brand.api';
 
-export function useDeleteBrand() {
+export function useCreateBrand() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: BrandApi.delete,
+    mutationFn: brandApi.create,
 
     onSuccess: () => {
       queryClient.invalidateQueries({
