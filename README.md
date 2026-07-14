@@ -9,12 +9,14 @@ Este proyecto permite administrar de forma sencilla los registros de marcas y pr
 ## Tecnologías utilizadas
 
 ### Backend
+
 - Laravel
 - PHP
 - API REST
 - PHPUnit para pruebas
 
 ### Frontend
+
 - Next.js
 - React
 - TypeScript
@@ -37,9 +39,34 @@ Este proyecto permite administrar de forma sencilla los registros de marcas y pr
 ## Instalación
 
 ### 1. Backend
+
 ```bash
 cd backend
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate --seed
+```
+
+### 2. Frontend
+
+```bash
+cd frontend
+npm install
+```
+
+## Ejecución
+
+### 1. Backend
+
+```bash
+cd backend
+php artisan serve
+```
+
+### 2. Frontend
+
+```bash
+cd frontend
+npm run dev
+```
